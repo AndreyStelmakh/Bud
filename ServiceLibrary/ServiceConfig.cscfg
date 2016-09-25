@@ -1,0 +1,60 @@
+﻿<ServiceConfiguration serviceName="Budget.Service1">
+  <Role name="User">
+    <Instances count="1" />
+      <!--<ConfigurationSettings>
+        <Setting name=""
+        <setting-name>
+          " value="<setting-value>" />
+    </ConfigurationSettings>
+      <Certificates>
+        <Certificate name=""
+        <certificate-name>
+          " thumbprint="<certificate-thumbprint>
+            " thumbprintAlgorithm="<algorithm>"/>
+    </Certificates>-->
+    </Role>
+
+  <!--<NetworkConfiguration>
+    <AccessControls>
+      <AccessControl name="aclName1">
+        <Rule order=""
+        <rule-order>
+          " action="<rule-action>
+            " remoteSubnet="<subnet-address>" description="rule-description"/>
+      </AccessControl>
+    </AccessControls>
+    <EndpointAcls>
+      <EndpointAcl role=""
+      <role-name>
+        " endpoint="<endpoint-name>
+          " accessControl="<acl-name>"/>
+    </EndpointAcls>
+    <Dns>
+      <DnsServers>
+        <DnsServer name=""
+        <server-name>
+          " IPAddress="<server-address>" />
+      </DnsServers>
+    </Dns>
+    <VirtualNetworkSite name=""
+    <site-name>
+      "/>
+      <AddressAssignments>
+        <InstanceAddress roleName=""
+          <role-name>
+            ">
+            <Subnets>
+              <Subnet name=""
+              <subnet-name>"/>
+        
+            </Subnets>
+          </InstanceAddress>
+        <ReservedIPs>
+          <ReservedIP name=""
+          <reserved-ip-name>"/>
+      
+        </ReservedIPs>
+      </AddressAssignments>
+    </NetworkConfiguration>-->
+
+</ServiceConfiguration>

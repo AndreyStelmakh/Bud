@@ -1,0 +1,68 @@
+﻿<Window x:Class="DesktopClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+
+        xmlns:styling="clr-namespace:DesktopClient.StylesTemplates"
+        xmlns:desk="clr-namespace:DesktopClient"
+
+        Title="MainWindow" Height="350" Width="525">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/StylesTemplates/ListItemTemplates.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+        </ResourceDictionary>
+
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ItemsControl ItemsSource="{Binding Sums, UpdateSourceTrigger=PropertyChanged}"
+                      ItemTemplate="{StaticResource SumDataTemplate}"
+                      Margin="10,5,10,10"
+                      />
+        <TabControl Grid.Row="1" SelectedValuePath="Tag" SelectedValue="{Binding Mode}" >
+            <TabItem Header="На распределение" Tag="{x:Static desk:Modes.OnSelectedAllocation}" >
+                <ScrollViewer>
+                    <ItemsControl ItemsSource="{Binding AllocationSets, UpdateSourceTrigger=PropertyChanged}"
+                                  ItemTemplate="{StaticResource ItemDataTemplate}"
+                                  x:Name="R" HorizontalAlignment="Stretch"
+                                  >
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel HorizontalAlignment="Stretch" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                </ScrollViewer>
+
+            </TabItem>
+            <TabItem Header="На статью" Tag="{x:Static desk:Modes.OnSelectedExpenditure}">
+                <ScrollViewer>
+                    <ItemsControl ItemsSource="{Binding ExpenditureSet, UpdateSourceTrigger=PropertyChanged}"
+                                  ItemTemplate="{StaticResource ItemDataTemplate}"
+                                  x:Name="R1" HorizontalAlignment="Stretch"
+                                  >
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel HorizontalAlignment="Stretch" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+        <WrapPanel Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left"
+                   Margin="10,5"
+                   >
+            <TextBox MinWidth="100" Text="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Button Command="ApplicationCommands.Save"
+                    Content="Отправить"
+                    />
+        </WrapPanel>
+    </Grid>
+</Window>
