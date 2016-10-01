@@ -55,10 +55,15 @@ begin
     CREATE TABLE [budget].[DistributionsDetails]
     (
         [DistributionId]    UNIQUEIDENTIFIER NOT NULL,
-        [ExpenditureId]     UNIQUEIDENTIFIER NOT NULL, 
-        [Percentage]        NUMERIC(5, 5) NOT NULL, 
+        [ExpenditureId]     UNIQUEIDENTIFIER NOT NULL,
+        --todo:
+        [_название распределения]   as budget.RetrieveTitle([DistributionId]), 
+        [_название статьи]          as budget.RetrieveTitle([ExpenditureId]), 
+        [Percentage]        NUMERIC(6, 5) NOT NULL, 
+        CONSTRAINT [FK_DistributionsDetails_to_Distributions] FOREIGN KEY ([DistributionId]) REFERENCES [budget].[Distributions]([Id]),
         CONSTRAINT [FK_DistributionsDetails_to_Expenditure] FOREIGN KEY ([ExpenditureId]) REFERENCES [budget].[Expenditure]([Id]),
-        PRIMARY KEY ([DistributionId], [ExpenditureId]),
+        CONSTRAINT [PK_DistributionsDetails] PRIMARY KEY ([DistributionId], [ExpenditureId]),
+        CONSTRAINT [CK_DistributionsDetails_Column] CHECK (Percentage >= 0)
     );
 
 
@@ -76,7 +81,7 @@ begin
 
     exec ('create trigger [budget].[Trigger_DistributionsDetails]
     ON [budget].[DistributionsDetails]
-    INSTEAD OF INSERT, UPDATE as begin return; end;');
+    FOR INSERT, UPDATE as begin return; end;');
 
 end;
 
@@ -84,28 +89,26 @@ go
 
 ALTER TRIGGER [budget].[Trigger_DistributionsDetails]
 ON [budget].[DistributionsDetails]
-INSTEAD OF INSERT, UPDATE
+FOR INSERT, UPDATE
 AS
 BEGIN
 
     set nocount on;
 
-    select distinct inserted.DistributionId
-    from inserted;
-    --todo:
+    declare @DistributionId uniqueidentifier;
 
-    if 1 = 0 throw 5234224, 'Distribution percentage overflow', 0;
+    select top 1 @DistributionId = DistributionId
+    from budget.DistributionsDetails
+    group by DistributionId
+    having sum(Percentage) > 1.0;
 
+    if @DistributionId is not null
+    begin
+      rollback;
 
-    insert into budget.DistributionsDetails
-    select *
-    from inserted;
+      return;
 
-    update budget.DistributionsDetails
-    set [Percentage] = inserted.[Percentage]
-    from budget.DistributionsDetails D
-    inner join inserted on inserted.DistributionId = D.DistributionId
-                        and inserted.ExpenditureId = D.ExpenditureId;
+    end;
 
 END
 
@@ -123,9 +126,10 @@ begin
 
     CREATE TABLE [budget].[Earnings]
     (
-	    [Id] UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID(), 
-	    [RegisteredAt] DATETIME2(2) NOT NULL, 
-        [Tool] NCHAR(6) NOT NULL, 
+	    [Id]                UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID(), 
+	    [RegisteredAt]      DATETIME2(2) NOT NULL, 
+        [Tool]              NCHAR(6) NOT NULL,
+        Properties          XML NULL,
         PRIMARY KEY ([Id])
     );
 
