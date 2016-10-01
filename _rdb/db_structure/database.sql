@@ -32,7 +32,7 @@ begin
 
 	CREATE TABLE [budget].[Distributions]
 	(
-        [Id]        UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
+        [Id]        UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID() PRIMARY KEY, 
         [Title]     NCHAR(24) NOT NULL
 	);
 
@@ -73,7 +73,7 @@ begin
 
     exec ('create trigger [budget].[Trigger_DistributionsDetails]
     ON [budget].[DistributionsDetails]
-    INSTEAD OF INSERT, UPDATE as begin end;');
+    INSTEAD OF INSERT, UPDATE as begin return; end;');
 
 end;
 
@@ -106,6 +106,7 @@ BEGIN
 
 END
 
+go
 
 ---------------------------------------------------------------
 -- Earnings /регистрация доходов/
@@ -119,7 +120,7 @@ begin
 
     CREATE TABLE [budget].[Earnings]
     (
-	    [Id] UNIQUEIDENTIFIER NOT NULL , 
+	    [Id] UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID(), 
 	    [RegisteredAt] DATETIME2(2) NOT NULL, 
         [Tool] CHAR(3) NOT NULL, 
         PRIMARY KEY ([Id])
@@ -141,11 +142,10 @@ begin
 
     CREATE TABLE [budget].[Budget]
     (
-	    [Id]                UNIQUEIDENTIFIER NOT NULL, 
 	    [IncomeId]          UNIQUEIDENTIFIER NOT NULL, 
 	    [ExpenditureId]     UNIQUEIDENTIFIER NOT NULL, 
         [Value]             decimal(10,4) NOT NULL, 
-        PRIMARY KEY ([Id]), 
+        PRIMARY KEY ([IncomeId], [ExpenditureId]), 
         CONSTRAINT [FK_Budget_to_Earnings] FOREIGN KEY ([IncomeId]) REFERENCES [budget].[Earnings]([Id]),
         CONSTRAINT [FK_Budget_to_Expenditure] FOREIGN KEY ([ExpenditureId]) REFERENCES [budget].[Expenditure]([Id])
     );
