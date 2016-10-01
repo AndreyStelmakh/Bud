@@ -14,8 +14,8 @@ begin
     CREATE TABLE [budget].[Expenditure]
     (
 	    [Id]                    UNIQUEIDENTIFIER NOT NULL DEFAULT newid(), 
-	    [Title]                 VARCHAR(100) NOT NULL, 
-        [TargetValue]           decimal(10,4) NULL DEFAULT 0, 
+	    [Title]                 NVARCHAR(100) NOT NULL, 
+        [Properties]            xml NULL, 
         PRIMARY KEY ([Id]), 
     );
 
@@ -23,6 +23,9 @@ end;
 
 
 
+---------------------------------------------------------------
+-- Distributions /распределение дохода по статьям/
+---------------------------------------------------------------
 if not exists(
         select 1
         from INFORMATION_SCHEMA.TABLES
@@ -33,7 +36,7 @@ begin
 	CREATE TABLE [budget].[Distributions]
 	(
         [Id]        UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID() PRIMARY KEY, 
-        [Title]     NCHAR(24) NOT NULL
+        [Title]     NVARCHAR(24) NOT NULL
 	);
 
 end;
@@ -122,7 +125,7 @@ begin
     (
 	    [Id] UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID(), 
 	    [RegisteredAt] DATETIME2(2) NOT NULL, 
-        [Tool] CHAR(3) NOT NULL, 
+        [Tool] NCHAR(6) NOT NULL, 
         PRIMARY KEY ([Id])
     );
 
