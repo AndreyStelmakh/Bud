@@ -32,9 +32,11 @@ go
 
 
 
+if object_id('budget.Stats') is null
+	exec ('create proc budget.Stats as begin return end')
+go
 
-
-create procedure budget.Stats
+alter procedure budget.Stats
 as
 begin
 
