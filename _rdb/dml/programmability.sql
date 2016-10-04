@@ -104,3 +104,46 @@ begin
 
 end;
 
+
+---------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
+--
+---------------------------------------------------------------------------------------------------
+if object_id('budget.DoPayment') is null
+	exec ('create proc budget.DoPayment as begin return end')
+go
+
+alter procedure budget.DoPayment
+  @Value         decimal(6, 2),
+  @ExpenditureId uniqueidentifier
+as
+begin
+
+  return;
+
+end;
+
+
+---------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
+--
+---------------------------------------------------------------------------------------------------
+if object_id('budget.DoPaymentWithDistribution') is null
+	exec ('create proc budget.DoPaymentWithDistribution as begin return end')
+go
+
+alter procedure budget.DoPaymentWithDistribution
+  @Value          decimal(6,2),
+  @DistributionId uniqueidentifier
+as
+begin
+-- todo: аргумент больше нуля
+
+  return;
+
+end;
+
+
+
+
+
