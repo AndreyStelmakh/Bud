@@ -161,6 +161,35 @@ end;
 
 ---------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------
---todo: триггер на budget.Budget - не позволяющий уводить суммы по статьям в минус
+--
 ---------------------------------------------------------------------------------------------------
+if not exists(
+        select 1
+        from sys.objects
+        where name = 'Trigger_Budget' )
+begin
+
+    exec ('create trigger [budget].[Trigger_Budget]
+    ON [budget].[Budget]
+    FOR INSERT, UPDATE as begin return; end;');
+
+end;
+
+go
+
+ALTER TRIGGER [budget].[Trigger_Budget]
+ON [budget].[Budget]
+FOR INSERT, UPDATE
+AS
+BEGIN
+
+    set nocount on;
+
+    declare @DistributionId uniqueidentifier;
+
+    --todo: триггер на budget.Budget - не позволяющий уводить суммы по статьям в минус
+
+END
+
+go
 
