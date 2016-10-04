@@ -126,8 +126,8 @@ begin
 
     CREATE TABLE [budget].[Earnings]
     (
-	    [Id]                UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID(), 
-	    [RegisteredAt]      DATETIME2(2) NOT NULL, 
+	[Id]                UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID(), 
+	[RegisteredAt]      DATETIME2(2) NOT NULL, 
         [Tool]              NCHAR(6) NOT NULL,
         Properties          XML NULL,
         PRIMARY KEY ([Id])
@@ -136,6 +136,52 @@ begin
 end;
 
 
+---------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
+--
+---------------------------------------------------------------------------------------------------
+if not exists(
+        select 1
+        from sys.objects
+        where name = 'Trigger_Earnings' )
+begin
+
+    exec ('create trigger [budget].[Trigger_Earnings]
+    ON [budget].[Earnings]
+    FOR INSERT, UPDATE as begin return; end;');
+
+end;
+
+go
+
+ALTER TRIGGER [budget].[Trigger_Earnings]
+ON [budget].[Earnings]
+FOR INSERT, UPDATE
+AS
+BEGIN
+
+    set nocount on;
+
+    declare @ExpenditureId uniqueidentifier = null;
+    
+    select top 1 @ExpenditureId = ExpenditureId
+    from budget.Budget B
+      inner join budget.Earnings E on E.IncomeId = B.IncomeId
+    group by ExpenditureId,
+             Tool
+    having Sum(Value) < 0;
+    
+    if @ExpenditureId is not null
+    begin
+      rollback;
+
+      return;
+
+    end;
+
+END
+
+go
 
 ---------------------------------------------------------------
 -- Budget
