@@ -188,8 +188,10 @@ BEGIN
     declare @ExpenditureId uniqueidentifier = null;
     
     select top 1 @ExpenditureId = ExpenditureId
-    from budget.Budget
-    group by ExpenditureId
+    from budget.Budget B
+      inner join budget.Earnings E on E.IncomeId = B.IncomeId
+    group by ExpenditureId,
+             Tool
     having Sum(Value) < 0;
     
     if @ExpenditureId is not null
