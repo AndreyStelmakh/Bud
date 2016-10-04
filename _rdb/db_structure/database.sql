@@ -185,9 +185,20 @@ BEGIN
 
     set nocount on;
 
-    declare @DistributionId uniqueidentifier;
+    declare @ExpenditureId uniqueidentifier = null;
+    
+    select top 1 @ExpenditureId = ExpenditureId
+    from budget.Budget
+    group by ExpenditureId
+    having Sum(Value) < 0;
+    
+    if @ExpenditureId is not null
+    begin
+      rollback;
 
-    --todo: триггер на budget.Budget - не позволяющий уводить суммы по статьям в минус
+      return;
+
+    end;
 
 END
 
