@@ -115,9 +115,15 @@ go
 
 alter procedure budget.DoPayment
   @Value         decimal(6, 2),
-  @ExpenditureId uniqueidentifier
+  --todo: длина
+  @Tool          nvarchar(6),
+  @ExpenditureId uniqueidentifier,
+  --todo: точность какая?
+  @RegisterOn    datetime2(7) = null
 as
 begin
+
+  set @RegisterOn = isnull(@RegisterOn, GetDate());
 
   return;
 
