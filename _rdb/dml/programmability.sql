@@ -151,5 +151,41 @@ end;
 
 
 
+---------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
+--
+---------------------------------------------------------------------------------------------------
+if object_id('budget.CancelPayment') is null
+	exec ('create proc budget.CancelPayment as begin return end')
+go
+
+alter procedure budget.CancelPayment
+  @IncomeId uniqueidentifier
+as
+begin
+
+  begin try
+  begin tran
+
+    delete from budget.Earnings
+    where Id = @IncomeId;
+
+    delete from budget.Budget
+    where IncomeId = @IncomeId;
+
+    commit;
+
+  end try
+  begin catch
+  rollback;
+
+  end catch;
+
+  return;
+
+end;
+
+
+
 
 
