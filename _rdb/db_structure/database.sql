@@ -133,6 +133,7 @@ begin
         PRIMARY KEY ([Id])
     );
 
+
 end;
 
 
@@ -199,7 +200,7 @@ begin
 	    [ExpenditureId]     UNIQUEIDENTIFIER NOT NULL, 
         [Value]             decimal(10,4) NOT NULL, 
         PRIMARY KEY ([IncomeId], [ExpenditureId]), 
-        CONSTRAINT [FK_Budget_to_Earnings] FOREIGN KEY ([IncomeId]) REFERENCES [budget].[Earnings]([Id]),
+        CONSTRAINT [FK_Budget_to_Earnings] FOREIGN KEY ([IncomeId]) REFERENCES [budget].[Earnings]([Id]) ON DELETE CASCADE,
         CONSTRAINT [FK_Budget_to_Expenditure] FOREIGN KEY ([ExpenditureId]) REFERENCES [budget].[Expenditure]([Id])
     );
 
