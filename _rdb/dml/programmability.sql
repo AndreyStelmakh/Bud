@@ -125,6 +125,15 @@ begin
 
   set @RegisterOn = isnull(@RegisterOn, GetDate());
 
+  declare @IncomeId uniqueidentifier = NEWID();
+
+  --todo:
+  --insert into budget.Earnings (Id, Tool, RegDate)
+  --values (@IncomeId, @Tool, @RegisterOn);
+
+  --insert into budget.Budget (IncomeId, ExpenditureId, Value)
+  --values (@IncomeId, @ExpenditureId, @Value);
+
   return;
 
 end;
@@ -143,7 +152,10 @@ alter procedure budget.DoPaymentWithDistribution
   @DistributionId uniqueidentifier
 as
 begin
--- todo: аргумент больше нуля
+  if @Value <= 0
+    return;
+
+  --todo:
 
   return;
 
