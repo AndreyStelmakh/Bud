@@ -114,12 +114,10 @@ if object_id('budget.DoPayment') is null
 go
 
 alter procedure budget.DoPayment
-  @Value         decimal(6, 2),
-  --todo: длина
-  @Tool          nvarchar(6),
+  @Value         decimal(10, 2),
+  @Tool          nchar(6),
   @ExpenditureId uniqueidentifier,
-  --todo: точность какая?
-  @RegisterOn    datetime2(7) = null
+  @RegisterOn    datetime2(2) = null
 as
 begin
 
@@ -127,12 +125,25 @@ begin
 
   declare @IncomeId uniqueidentifier = NEWID();
 
-  --todo:
-  --insert into budget.Earnings (Id, Tool, RegDate)
-  --values (@IncomeId, @Tool, @RegisterOn);
 
-  --insert into budget.Budget (IncomeId, ExpenditureId, Value)
-  --values (@IncomeId, @ExpenditureId, @Value);
+  begin try
+    begin tran
+
+    insert into budget.Earnings (Id, Tool, RegDate)
+    values (@IncomeId, @Tool, @RegisterOn);
+
+
+    insert into budget.Budget (IncomeId, ExpenditureId, Value)
+    values (@IncomeId, @ExpenditureId, @Value);
+
+    commit;
+
+  end try
+  begin catch
+
+    rollback;
+
+  end catch;
 
   return;
 
@@ -148,7 +159,7 @@ if object_id('budget.DoPaymentWithDistribution') is null
 go
 
 alter procedure budget.DoPaymentWithDistribution
-  @Value          decimal(6,2),
+  @Value          decimal(10,2),
   @DistributionId uniqueidentifier
 as
 begin

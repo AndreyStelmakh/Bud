@@ -167,7 +167,7 @@ BEGIN
     
     select top 1 @ExpenditureId = ExpenditureId
     from budget.Budget B
-      inner join budget.Earnings E on E.IncomeId = B.IncomeId
+      inner join budget.Earnings E on E.Id = B.IncomeId
     group by ExpenditureId,
              Tool
     having Sum(Value) < 0;
@@ -236,7 +236,7 @@ BEGIN
     
     select top 1 @ExpenditureId = ExpenditureId
     from budget.Budget B
-      inner join budget.Earnings E on E.IncomeId = B.IncomeId
+      inner join budget.Earnings E on E.Id = B.IncomeId
     group by ExpenditureId,
              Tool
     having Sum(Value) < 0;
