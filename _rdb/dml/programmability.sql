@@ -83,6 +83,8 @@ begin
 
 
 
+
+
 ---------------------------------------------------
 --
 ---------------------------------------------------
@@ -187,22 +189,9 @@ alter procedure budget.CancelPayment
 as
 begin
 
-  begin try
-  begin tran
-
-    delete from budget.Earnings
-    where Id = @IncomeId;
-
-    delete from budget.Budget
-    where IncomeId = @IncomeId;
-
-    commit;
-
-  end try
-  begin catch
-  rollback;
-
-  end catch;
+  -- budget.Budget configured with cascaded update
+  delete from budget.Earnings
+  where Id = @IncomeId;
 
   return;
 
