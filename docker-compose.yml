@@ -6,3 +6,9 @@ services:
     build:
       context: ./WebApplication
       dockerfile: Dockerfile
+
+  webapplication1:
+    image: webapplication
+    build:
+      context: ./WebApplication
+      dockerfile: Dockerfile

@@ -1,0 +1,13 @@
+﻿@model WebApplication.Models.BudgetViewModels.SummaryViewModel
+@{
+    ViewData["Title"] = "About";
+}
+<h2>@ViewData["Title"].</h2>
+<h3>@ViewData["Message"]</h3>
+
+<p>Use this area to provide additional information.</p>
+
+<ul>
+    @foreach (var g in Model.ByTools)
+    { <li>@g</li> }
+</ul>

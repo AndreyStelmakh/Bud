@@ -9,8 +9,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <UserSecretsId>aspnet-WebApplication-8a26001a-b7c7-4606-8651-f1b3382d21d3</UserSecretsId>
-    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+    <UserSecretsId>aspnet-WebApplication-f2a079ac-bd17-47f9-a781-8f7ed71b0911</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />

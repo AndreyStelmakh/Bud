@@ -38,6 +38,11 @@
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a asp-area="" asp-controller="Budget" asp-action="Summary">Summary</a></li>
+                </ul>
+            </div>
         </div>
     </nav>
     <div class="container body-content">

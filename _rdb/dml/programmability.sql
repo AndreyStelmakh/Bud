@@ -1,8 +1,14 @@
 ﻿
+if schema_id('budget') is null
+  exec('create schema budget;');
+go
 
 
+if object_id('budget.[RetrieveTitle]') is null
+	exec ('create function budget.[RetrieveTitle] returns int as return 0;')
+go
 
-create function [budget].[RetrieveTitle]
+alter function [budget].[RetrieveTitle]
 (
     @Id uniqueidentifier
 )
@@ -112,7 +118,7 @@ end;
 --
 ---------------------------------------------------------------------------------------------------
 if object_id('budget.DoPayment') is null
-	exec ('create proc budget.DoPayment as begin return end')
+	exec ('create proc budget.DoPayment as return;')
 go
 
 alter procedure budget.DoPayment
@@ -131,7 +137,7 @@ begin
   begin try
     begin tran
 
-    insert into budget.Earnings (Id, Tool, RegDate)
+    insert into budget.Earnings (Id, Tool, RegisteredAt)
     values (@IncomeId, @Tool, @RegisterOn);
 
 
@@ -157,10 +163,10 @@ end;
 --
 ---------------------------------------------------------------------------------------------------
 if object_id('budget.DoPaymentWithDistribution') is null
-	exec ('create proc budget.DoPaymentWithDistribution as begin return end')
+	exec ('create proc [budget].[DoPaymentWithDistribution] as return;')
 go
 
-alter procedure budget.DoPaymentWithDistribution
+alter procedure [budget].[DoPaymentWithDistribution]
   @Value          decimal(10,2),
   @DistributionId uniqueidentifier
 as
@@ -181,7 +187,7 @@ end;
 --
 ---------------------------------------------------------------------------------------------------
 if object_id('budget.CancelPayment') is null
-	exec ('create proc budget.CancelPayment as begin return end')
+	exec ('create proc budget.CancelPayment as return;')
 go
 
 alter procedure budget.CancelPayment

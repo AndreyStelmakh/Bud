@@ -1,6 +1,5 @@
 ﻿
 
-
 ---------------------------------------------------------------
 -- Expenditure /статьи бюджета/
 ---------------------------------------------------------------
@@ -16,7 +15,7 @@ begin
 	    [Id]                    UNIQUEIDENTIFIER NOT NULL DEFAULT newid(), 
 	    [Title]                 NVARCHAR(100) NOT NULL, 
         [Properties]            xml NULL, 
-        PRIMARY KEY ([Id]), 
+        PRIMARY KEY NONCLUSTERED ([Id]), 
     );
 
 end;
@@ -35,7 +34,7 @@ begin
 
 	CREATE TABLE [budget].[Distributions]
 	(
-        [Id]        UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID() PRIMARY KEY, 
+        [Id]        UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID() PRIMARY KEY NONCLUSTERED, 
         [Title]     NVARCHAR(24) NOT NULL
 	);
 
@@ -57,12 +56,12 @@ begin
         [DistributionId]    UNIQUEIDENTIFIER NOT NULL,
         [ExpenditureId]     UNIQUEIDENTIFIER NOT NULL,
         --todo:
-        [_название распределения]   as budget.RetrieveTitle([DistributionId]), 
-        [_название статьи]          as budget.RetrieveTitle([ExpenditureId]), 
+        --[_название распределения]   as budget.RetrieveTitle([DistributionId]), 
+        --[_название статьи]          as budget.RetrieveTitle([ExpenditureId]), 
         [Percentage]        NUMERIC(6, 5) NOT NULL, 
         CONSTRAINT [FK_DistributionsDetails_to_Distributions] FOREIGN KEY ([DistributionId]) REFERENCES [budget].[Distributions]([Id]),
         CONSTRAINT [FK_DistributionsDetails_to_Expenditure] FOREIGN KEY ([ExpenditureId]) REFERENCES [budget].[Expenditure]([Id]),
-        CONSTRAINT [PK_DistributionsDetails] PRIMARY KEY ([DistributionId], [ExpenditureId]),
+        CONSTRAINT [PK_DistributionsDetails] PRIMARY KEY NONCLUSTERED ([DistributionId], [ExpenditureId]),
         CONSTRAINT [CK_DistributionsDetails_Column] CHECK (Percentage >= 0)
     );
 
@@ -126,8 +125,8 @@ begin
 
     CREATE TABLE [budget].[Earnings]
     (
-	[Id]                UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID(), 
-	[RegisteredAt]      DATETIME2(2) NOT NULL, 
+	      [Id]                UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID(), 
+	      [RegisteredAt]      DATETIME2(2) NOT NULL, 
         [Tool]              NCHAR(6) NOT NULL,
         Properties          XML NULL,
         PRIMARY KEY ([Id])
@@ -199,7 +198,7 @@ begin
 	    [IncomeId]          UNIQUEIDENTIFIER NOT NULL, 
 	    [ExpenditureId]     UNIQUEIDENTIFIER NOT NULL, 
         [Value]             decimal(10,4) NOT NULL, 
-        PRIMARY KEY ([IncomeId], [ExpenditureId]), 
+        PRIMARY KEY NONCLUSTERED ([IncomeId], [ExpenditureId]), 
         CONSTRAINT [FK_Budget_to_Earnings] FOREIGN KEY ([IncomeId]) REFERENCES [budget].[Earnings]([Id]) ON DELETE CASCADE,
         CONSTRAINT [FK_Budget_to_Expenditure] FOREIGN KEY ([ExpenditureId]) REFERENCES [budget].[Expenditure]([Id])
     );

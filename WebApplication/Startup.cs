@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using WebApplication.Data;
 using WebApplication.Models;
 using WebApplication.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApplication
 {
@@ -39,6 +40,11 @@ namespace WebApplication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<MvcOptions>(options =>
+            {
+                options.Filters.Add(new RequireHttpsAttribute());
+            });
+
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
