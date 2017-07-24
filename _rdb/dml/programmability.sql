@@ -39,7 +39,7 @@ go
 
 
 if object_id('budget.Stats') is null
-	exec ('create proc budget.Stats as begin return end')
+	exec ('create proc budget.Stats as return;')
 go
 
 alter procedure budget.Stats
