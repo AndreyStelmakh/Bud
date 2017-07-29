@@ -2,16 +2,26 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using WebApplication.Models;
+using System.Collections.Generic;
+using WebApplication.Models.BudgetViewModels;
 
-namespace WebApplication.Models
+namespace WebApplication.Data
 {
-    public partial class B2Context : IdentityDbContext<ApplicationUser>
+    public partial class B2Context
+        : IdentityDbContext<ApplicationUser>,
+          IBudget
     {
         public virtual DbSet<Budget> Budget { get; set; }
         public virtual DbSet<Distributions> Distributions { get; set; }
         public virtual DbSet<DistributionsDetails> DistributionsDetails { get; set; }
         public virtual DbSet<Earnings> Earnings { get; set; }
         public virtual DbSet<Expenditure> Expenditure { get; set; }
+
+        public List<TV> Summary()
+        {
+            return new List<TV>() { new TV(Tool.Доллар, 15), new TV(Tool.Рубль, 11) };
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
